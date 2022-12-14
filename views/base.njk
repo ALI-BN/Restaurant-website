@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    {#  todo: return bootstrap online link #}
+    <head>
+        <title>{{title}}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        {# <link href="/boot/css/bootstrap.min.css" rel="stylesheet"> #}
+        <link rel="stylesheet" href="/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        {%set totalCartPrice=0%}
+        {%set cartIds=[]%}
+
+        <div class="modal" id="cart-modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6">Item</div>
+                                <div class="col-6">Price</div>
+                                {% for meal in cart %}
+                                    {% set totalCartPrice = totalCartPrice + meal.price %}
+                                    {% set cartIds = (cartIds.push(meal.id), cartIds) %}
+                                    <div class="col-6">
+                                        {{meal.title}}
+                                    </div>
+                                    <div class="col-6">
+                                        {{meal.price}}
+                                    </div>
+                                {% endfor %}
+
+                                <div class="col-6">Total</div>
+                                <div class="col-6">
+                                    {{totalCartPrice | round (2)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn sp-button red-button" data-bs-dismiss="modal">Close</button>
+                        <form action='/sales/order' method='post'>
+                            <input type="hidden" name="totalPrice" value="{{totalCartPrice}}">
+                            <input type="hidden" name="ids" value="[{{cartIds}}]">
+                            <button type="submit" class="btn sp-button">Order Now</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cart Content</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4">Item</div>
+                                <div class="col-md-4 ">Price</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end Modal -->
+        <nav class="navbar navbar-dark navbar-expand-lg custom-navbar fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="/projectImages/logo-White.svg" alt="burger logo-White" width="100" class="d-inline-block align-text-top">
+                </a>
+                <button class="navbar-toggler ms-auto me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarTogglerDemo02">
+                    <ul class="navbar-nav ms-auto me-5">
+                        <li class="nav-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/#menu">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/#gallery">Gallery</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/#testimonials">Testimonials</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/#contact-us">Contact Us</a>
+                        </li>
+                        <li class="nav-item personalNavbar">
+                            <a href="#">Search</a>
+                        </li>
+                        <li class="nav-item personalNavbar">
+                            <a href="#">profile</a>
+                        </li>
+                        <li class="nav-item personalNavbar">
+                            <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#cart-modal">
+                            Cart <strong>
+                                    <div id="cart-item"></div>
+                                </strong>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <main>
+            {% block view %}{% endblock %}
+
+            <div class="container-fluid">
+                <section class="row" id="contact-us">
+                    <ul class="col-lg-6 px-md-10 ">
+                        <li>phone:
+                        <Strong>+966-13-860-0000</Strong>
+                        </li>
+                        <li>
+                            <div>
+                                <img src="/projectImages/clock.svg" alt="clock picture">
+                                <div class="">
+                                    <p>sun-thr 11:00-23:00</p>
+                                    <p>fri-sat 12:00-23</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="contact-us-icon">
+                            <div>
+                                <img src="/projectImages/placeholder.svg" alt="placeholder img">
+                                <div class="">
+                                    <p>123 KFUPM Students</p>
+                                    <p>Mall Dhahran 34464</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/">facebook</a>
+                            <a href="https://twitter.com/">twitter</a>
+                            <a href="https://www.instagram.com/">instagram</a>
+                        </li>
+                    </ul>
+                    <img class="col-lg-6" src="/projectImages/map.png" alt="map">
+                </section>
+            </div>
+        </main>
+        <footer class=" container-fluid ">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="footer-item  ">
+                        <img src="/projectImages/logo-red.svg " alt="logo ">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil deserunt maiores, molestiae quisquam sit eum ipsum asperiores consectetur necessitatibus accusantium expedita, pariatur tempora aliquid vel ex id quod amet dolor.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="footer-item ">
+                        <h3>
+                            <strong>USEFUL LINKS</strong>
+                        </h3>
+                        <ul>
+                            <li>
+                                <a href="#about">about</a>
+                            </li>
+                            <li>
+                                <a href="/#menu">Menu</a>
+                            </li>
+                            <li>
+                                <a href="#testimonials ">Testimonials</a>
+                            </li>
+                            <li>
+                                <a href="#contact-us ">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="footer-item">
+                        <h2 class="section-title ">
+                            <strong>INTEGRAM FEEDS</strong>
+                        </h2>
+                        <div class="grid-img ">
+                            <img src="/projectImages/meal1.png " alt="meal1 ">
+                            <img src="/projectImages/meal2.png " alt="meal2 ">
+                            <img src="/projectImages/meal3.png " alt="meal3 ">
+                            <img src="/projectImages/meal4.png " alt="meal4 ">
+                            <img src="/projectImages/meal5.png " alt="meal5 ">
+                            <img src="/projectImages/meal6.png " alt="meal6 ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script type="text/javascript" src="/app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM " crossorigin="anonymous "></script>
+        {# <script type="text/javascript" src="/boot/js/bootstrap.bundle.min.js"></script> #}
+    </body>
+
+</html>

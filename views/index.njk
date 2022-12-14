@@ -1,0 +1,150 @@
+{% extends "base.njk"%}
+{% block view %}
+
+    <section id="menu">
+        <div class="background-img ">
+            <div id="header" class="container">
+                <h1>
+                    <strong>Party Time</strong>
+                </h1>
+                <div id="shape">
+                    <h3>
+                        <strong>Buy any 2 burgers and get 1.5L pepsi Free</strong>
+                    </h3>
+                </div>
+                <button class="sp-button" id="order-button">Order Now</button>
+            </div>
+        </div>
+        <div class="container mt-5 text-center">
+            <h2 class="section-title">
+                <strong>Want to Eat</strong>
+            </h2>
+            <p>try our most delicious food and usually take minutes to deliver</p>
+            <div class="row p-0">
+                <a class="p-0 col-2 btn " href=" ">burger </a>
+                    <a class="p-0 col-2 btn " href=" ">pizza </a>
+                <a class="p-0 col-2 btn " href=" ">fast food </a>
+                    <a class="p-0 col-2 btn " href=" ">cupcake </a>
+                <a class="p-0 col-2 btn " href=" ">sandwich </a>
+                    <a class="p-0 col-2 btn " href=" ">spaghetti</a>
+            </div>
+        </div>
+        <div class="row yellow-background three-items ">
+            <img class="col-lg-6 col-md-12 " src="projectImages/delivery.png " alt="delivery man ">
+
+            <div class="col-lg-6 col-md-12 ">
+                <div id="triangle-shape">
+                    <h2>
+                        <strong>We guarntee 30 minutes delivery</strong>
+                    </h2>
+                </div>
+                <p>If you are having a meeting, working late at night and need an extra push</p>
+            </div>
+        </div>
+
+    </section>
+    {% if recentBought | length > 0 %}
+
+        <section id="recent-bought" class="container mt-5">
+            <h2 class="section-title">
+                <strong>Recent Bought Meals</strong>
+            </h2>
+            <div class="row">
+                {% for meal in recentBought %}
+                    <div class="card food-card col-lg-3 col-md-4 col-12 " title={{meal.title}} id="meal-{{meal.id}}">
+                        <a class="btn text-start " href="detail/{{meal.id}}">
+                            <img class="card-img-top " src="/projectImages/{{meal.image}}" alt="meal"+{{meal.id}}>
+                            <div class="card-body">
+                                <p>&#11088;{{meal.rating | round (2)}} rating</p>
+                                <h5 class="card-title ">
+                                    <strong>{{meal.title}}</strong>
+                                </h5>
+                                <p>{{meal.description.slice(1, 50)}}...</p>
+
+                            </div>
+                        </a>
+                        <div class="card-body row align-items-center ">
+                            <button class="col-auto sp-button button-cart " onclick="location.href='/sales/cart?id={{meal.id}}&back=/#meal-{{meal.id}}'">add to cart</button>
+                            <p class="col-auto col-lg-auto col-md-3 pe-1 justify-items-center m-0 p-0 text-end ">{{meal.price}}</p>
+                            <p class="col m-0 p-0 ">SAR</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+    <section id="gallery" class="container mt-5">
+        <h2 class="section-title">
+            <strong>our most popular recipes</strong>
+        </h2>
+        <p class="align-center ">try our most delisios food and usually take minutes to deliver</p>
+        <div class="row">
+            {% for meal in meals %}
+                {% if meal not in recentBought %}
+                    <div class="card food-card col-lg-3 col-md-4 col-12 " title={{meal.title}} id="meal-{{meal.id}}">
+                        <a class="btn text-start " href="detail/{{meal.id}}">
+                            <img class="card-img-top " src="projectImages/{{meal.image}}" alt="meal"+{{meal.id}}>
+                            <div class="card-body">
+                                <p>&#11088;{{meal.rating | round (2)}} rating</p>
+                                <h5 class="card-title ">
+                                    <strong>{{meal.title}}</strong>
+                                </h5>
+                                <p>{{meal.description.slice(1, 50)}}...</p>
+
+                            </div>
+                        </a>
+                        <div class="card-body row align-items-center ">
+                            <button class="col-auto sp-button button-cart " onclick="location.href='/sales/cart?id={{meal.id}}&back=/#meal-{{meal.id}}'">add to cart</button>
+                            <p class="col-auto col-lg-auto col-md-3 pe-1 justify-items-center m-0 p-0 text-end ">{{meal.price}}</p>
+                            <p class="col m-0 p-0 ">SAR</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <section id="testimonials ">
+            <h2 class="section-title mt-5 ">clients Testimonials</h2>
+            <div class="container">
+                <div id="carousel-testimonials" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carousel-testimonials" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carousel-testimonials" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carousel-testimonials" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row" id="testimonials-body">
+                                <img class="col-lg-6" src="projectImages/man-eating-burger.png" alt="man eating a burger">
+                                <p class="d-flex align-items-center col-lg-6">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam quas repellat ipsum veniam! Eaque omnis corrupti atque deserunt dolor accusantium tenetur expedita veniam ducimus? Nesciunt eos asperiores ducimus
+                                            possimus quis.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row" id="testimonials-body">
+                                <img class="col-lg-6" src="projectImages/man-eating-burger.png" alt="man eating a burger">
+                                <p class="d-flex align-items-center col-lg-6">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam quas repellat ipsum veniam! Eaque omnis corrupti atque deserunt dolor accusantium tenetur expedita veniam ducimus? Nesciunt eos asperiores ducimus
+                                            possimus quis.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row" id="testimonials-body">
+                                <img class="col-lg-6" src="projectImages/man-eating-burger.png" alt="man eating a burger">
+                                <p class="d-flex align-items-center col-lg-6">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quisquam quas repellat ipsum veniam! Eaque omnis corrupti atque deserunt dolor accusantium tenetur expedita veniam ducimus? Nesciunt eos asperiores ducimus
+                                            possimus quis.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-testimonials" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-testimonials" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </section>
+{% endblock %}

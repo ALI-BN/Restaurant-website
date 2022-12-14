@@ -1,0 +1,147 @@
+{% extends "base.njk"%}
+{% block view %}
+
+    <div class="container navbar-margin">
+        <div class="row picture-text">
+            <img class="col-md-12 col-lg-6" src="/projectImages/{{meal.image}}" alt="picture of a burger"/>
+
+            <div class="col-md-12 col-lg-6 ">
+                <h3 class="red-text">{{ meal.title }}</h3>
+                <hp>{{meal.price}} SAR</hp>
+                <p>&#11088;{{meal.rating}} rating</p>
+                <p>
+                    {{meal.description}}
+                </p>
+                <div class="row">
+                    <button class="col-1 sp-button counter m-0" onclick="dec()">-</button>
+                    <button class="col-1 sp-button counter m-0" id="counter-number">1</button>
+                    <button class="col-1 sp-button counter m-0" onclick="inc()">+</button>
+                    <button class="col-auto ms-auto sp-button" id="button-cart" onclick="toCart({{meal.id}})">add to cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="pills-btn active" id="pills-description-tab" data-bs-toggle="pill" data-bs-target="#pills-description" type="button" role="tab" aria-controls="pills-description" aria-selected="true">
+                Description
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button data-meal="{{meal.id}}" class=" pills-btn" id="pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#pills-reviews" type="button" role="tab" aria-controls="pills-reviews" aria-selected="false" >
+                Reviews
+              </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            {% set nutrition = meal.nutrition %}
+            <!-- Description Section -->
+            <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+                <h3>
+                    <strong>description</strong>
+                </h3>
+
+                <p>{{meal.description}}</p>
+                <h4>nutrition facts</h4>
+                <table border="1">
+                    <colgroup>
+                        <col/>
+                        <col/>
+                        <col/>
+                    </colgroup>
+                    <tr>
+                        <td colspan="3">
+                            <strong>Supplement Facts</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <strong>Serving Size:</strong>
+                            {{nutrition.serving_size}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <strong>Serving Per Container:</strong>
+                            {{nutrition.serving_per_container}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong></strong>
+                        </td>
+                        <td>
+                            <strong>Amount Per Serving</strong>
+                        </td>
+                        <td>
+                            <strong>%Daily Value*</strong>
+                        </td>
+                    </tr>
+
+                    {% for fact in nutrition.facts %}
+                        <tr>
+                            <td>{{fact.item}}</td>
+                            <td>{{fact.amount_per_serving}}{{fact.unit}}</td>
+                            <td>{{fact.daily_value}}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3">
+                                *Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs
+                            </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- Start Reviews -->
+            <div class="tab-pane fade" id="pills-reviews" role="tabpanel" aria-labelledby="pills-reviews-tab">
+                <h3>Reviews</h3>
+                <div class="container-fluid">
+                    <div class="container">
+                        <h2>No Reviews</h2>
+                        <div id="carousel-reviwes" class="carousel slide hide" data-bs-ride="carousel">
+                            <div class="carousel-indicators"></div>
+                            <div class="carousel-inner"></div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-reviwes" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carousel-reviwes" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button class="sp-button" id="order-button" onclick="showForm()">
+                Add Your Review
+              </button>
+                <form name="rate-form" data-meal="{{meal.id}}" class="rate-form">
+                    <label for="image" class="lable-item">Image</label>
+                    <input type="file" name="image" accept="image/png, image/jpeg"/ required>
+                    <label for="rating" class="label-item">Rate the food</label>
+                    <input type="range" name = "rating" id="rating" step="1" min="1" max="5" value="1" list="rate-values"/>
+                    <datalist id="rate-values">
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </datalist>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" class="input-text" placeholder="First and Last name" required>
+                    <label for="city">City</label>
+                    <input type="text" name="city" class="input-text" placeholder="Your City" required>
+                    <label for="review">Review</label>
+                    <br/>
+                    <div id="review-error" class="error-txt"></div>
+                    <textarea maxlength="500" onkeydown="countText(this,'counter-review')" onkeyup="countText(this,'counter-review')" name="review" class="input-text" cols="30" rows="10" placeholder="type your review here max 500 character" ></textarea>
+                    <p id="counter-review">0/500</p>
+                    <button class="sp-button" onclick="addReview(event)" type="submit">Submit</button>
+                </form>
+            </div>
+            <!-- End of Review -->
+        </div>
+    </div>
+{% endblock %}
